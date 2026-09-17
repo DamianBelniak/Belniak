@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Belniak — 2000s Car Posters</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
+<style>
+  @font-face { font-family: "AppleGaramond"; src: url("https://cdn.shopify.com/s/files/1/1081/4042/9661/files/AppleGaramond-Light.ttf?v=1786033249") format("truetype"); font-weight: normal; font-style: normal; font-display: swap; }
+  @font-face { font-family: "BelTimes"; src: url("https://cdn.shopify.com/s/files/1/1081/4042/9661/files/times.ttf?v=1786034371") format("truetype"); font-weight: normal; font-style: normal; font-display: swap; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #1c1c1c; color: #fff; overflow-x: hidden; scroll-behavior: smooth; }
+  @property --bel-arrow-angle { syntax: "<angle>"; inherits: false; initial-value: -75deg; }
+  @property --bel-solid { syntax: "<length-percentage>"; inherits: false; initial-value: calc(100% - 10px); }
+  @property --belc-angle-1 { syntax: "<angle>"; inherits: false; initial-value: -75deg; }
+  .bel-top-blur-bar { position: fixed; top: 0; left: 0; width: 100%; height: 65px; z-index: 9999; pointer-events: none; -webkit-backdrop-filter: blur(12px) saturate(160%); backdrop-filter: blur(12px) saturate(160%); background: linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0.18)); box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), inset 0 -1px 0 rgba(255,255,255,0.15), 0 2px 12px rgba(0,0,0,0.18); -webkit-mask: linear-gradient(to bottom, #000 var(--bel-solid, calc(100% - 10px)), transparent 100%); mask: linear-gradient(to bottom, #000 var(--bel-solid, calc(100% - 10px)), transparent 100%); opacity: 0; transform: translateY(-100%); transition: opacity 0.35s ease, transform 0.35s ease, --bel-solid 0.4s ease, box-shadow 0.4s ease; display: flex; align-items: center; justify-content: center; }
+  .bel-top-blur-bar.is-visible { opacity: 1; transform: translateY(0); }
+  .bel-top-blur-bar.menu-open { --bel-solid: 100%; box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 0 0 rgba(0,0,0,0); }
+  .bel-top-blur-bar img.bel-bar-logo { display: block; height: 40px; width: auto; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3)); cursor: pointer; }
+  .bel-top-menu-btn { position: absolute; left: 90px; top: 50%; transform: translateY(-50%); width: 28px; height: 20px; pointer-events: auto; cursor: pointer; }
+  .bel-top-menu-btn span { position: absolute; left: 0; width: 100%; height: 2px; background: #fff; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.3); transition: transform 0.35s cubic-bezier(0.25,1,0.5,1), opacity 0.2s ease; }
+  .bel-top-menu-btn span:nth-child(1) { top: 0; }
+  .bel-top-menu-btn span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+  .bel-top-menu-btn span:nth-child(3) { bottom: 0; }
+  .bel-top-menu-btn.is-open span:nth-child(1) { top: 50%; transform: translateY(-50%) rotate(45deg); }
+  .bel-top-menu-btn.is-open span:nth-child(2) { opacity: 0; }
+  .bel-top-menu-btn.is-open span:nth-child(3) { bottom: auto; top: 50%; transform: translateY(-50%) rotate(-45deg); }
+  .bel-top-cart { position: absolute; right: 90px; top: 50%; transform: translateY(-50%); width: 26px; height: 26px; pointer-events: auto; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.25s cubic-bezier(0.25,1,0.5,1); }
+  .bel-top-cart:hover { transform: translateY(-50%) scale(1.12); }
+  .bel-top-cart svg { width: 26px; height: 26px; stroke: #fff; stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4)); }
+  .bel-menu-panel { position: fixed; top: 64px; left: 0; width: 100%; height: 0; z-index: 9998; overflow: hidden; background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.12)); -webkit-backdrop-filter: blur(12px) saturate(160%); backdrop-filter: blur(12px) saturate(160%); -webkit-mask: linear-gradient(to bottom, #000 calc(100% - 10px), transparent 100%); mask: linear-gradient(to bottom, #000 calc(100% - 10px), transparent 100%); transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1); pointer-events: none; }
+  .bel-menu-panel.is-open { height: 250px; pointer-events: auto; }
+  .bel-menu-link { display: block; text-align: center; font-family: "AppleGaramond", Georgia, serif; font-size: 1.5rem; letter-spacing: 0.02em; color: #fff; text-decoration: none; text-shadow: 0 1px 4px rgba(0,0,0,0.35); cursor: pointer; padding-top: 18px; transition: opacity 0.25s ease, transform 0.25s ease; }
+  .bel-menu-link:first-child { padding-top: 24px; }
+  .bel-menu-link:hover { opacity: 0.75; transform: translateY(-2px); }
+  .bel-center-logo { width: 100%; display: flex; justify-content: center; padding: 2rem 1rem 1rem; }
+  .bel-center-logo img { display: block; width: 70px; height: auto; opacity: 0; animation: belCenterLogoFade 1.4s ease-out forwards; cursor: pointer; }
+  @keyframes belCenterLogoFade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes belHeroFrost { 0% { opacity: 0; filter: blur(24px); transform: scale(1.04); } 100% { opacity: 1; filter: blur(0); transform: scale(1); } }
+  /* HERO SWIPE CAROUSEL (top) */
+  .bel-hero { position: relative; width: 100vw; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; background: #1c1c1c; padding: 1rem 0 2.5rem; overflow: hidden; }
+  .bel-hero-viewport { max-width: 420px; margin: 0 auto; position: relative; overflow: hidden; }
+  .bel-hero-viewport::before, .bel-hero-viewport::after { content: ""; position: absolute; top: 0; bottom: 0; width: 60px; z-index: 4; pointer-events: none; }
+  .bel-hero-viewport::before { left: 0; background: linear-gradient(to right, #1c1c1c, rgba(28,28,28,0)); }
+  .bel-hero-viewport::after { right: 0; background: linear-gradient(to left, #1c1c1c, rgba(28,28,28,0)); }
+  .bel-hero-track { display: flex; will-change: transform; transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1); cursor: grab; }
+  .bel-hero-track.bel-dragging { transition: none; cursor: grabbing; }
+  .bel-hero-slide { min-width: 100%; display: flex; flex-direction: column; align-items: center; padding: 0 8px; filter: blur(6px); opacity: 0.45; transform: scale(0.94); transition: filter 0.55s ease, opacity 0.55s ease, transform 0.55s ease; }
+  .bel-hero-slide.is-current { filter: blur(0); opacity: 1; transform: scale(1); }
+  .bel-hero-slide a { display: block; width: 100%; cursor: pointer; }
+  .bel-hero-slide img { display: block; width: 100%; height: auto; border-radius: 12px; background: #1c1c1c; user-select: none; -webkit-user-drag: none; pointer-events: none; }
+  .bel-hero-cap { text-align: center; margin-top: 0.9rem; }
+  .bel-hero-name { font-family: "AppleGaramond", Georgia, serif; font-size: 1.5rem; color: #fff; text-shadow: 0 0 0.4em rgba(255,255,255,0.25); }
+  .bel-hero-price { font-family: "BelTimes", serif; font-size: 1.4rem; color: rgba(255,255,255,0.9); margin-top: -2px; }
+  .bel-hero-arrow { position: absolute; top: calc(50% - 1.6rem); transform: translateY(-50%); width: 46px; height: 46px; border-radius: 999vw; background: linear-gradient(-75deg, rgba(255,255,255,0.1), rgba(255,255,255,0.3), rgba(255,255,255,0.1)); box-shadow: inset 0 1px 2px rgba(255,255,255,0.5), 0 2px 8px rgba(0,0,0,0.35); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 6; transition: transform 0.25s ease; }
+  .bel-hero-arrow:hover { transform: translateY(-50%) scale(1.1); }
+  .bel-hero-arrow:active { transform: translateY(-50%) scale(0.9); }
+  .bel-hero-arrow svg { width: 20px; height: 20px; stroke: #fff; stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4)); }
+  .bel-hero-arrow-left { left: 16px; } .bel-hero-arrow-right { right: 16px; }
+  .bel-hero-dots { display: flex; justify-content: center; gap: 7px; margin-top: 1.3rem; flex-wrap: wrap; max-width: 320px; margin-left: auto; margin-right: auto; }
+  .bel-hero-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: background 0.3s ease, transform 0.3s ease; }
+  .bel-hero-dot.is-active { background: rgba(255,255,255,0.9); transform: scale(1.3); }
+  @media (max-width: 768px) { .bel-hero-viewport { max-width: 300px; } .bel-hero-viewport::before, .bel-hero-viewport::after { width: 34px; } .bel-hero-name { font-size: 1.25rem; } .bel-hero-price { font-size: 1.2rem; } .bel-hero-arrow { width: 40px; height: 40px; left: 8px; } .bel-hero-arrow-right { right: 8px; } .bel-hero-arrow svg { width: 17px; height: 17px; } }
+  .bel-two-posters { width: 100%; max-width: 100%; background: #1c1c1c; padding: 4rem 2rem; display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 3vw 3vw; overflow: hidden; }
+  .bel-poster-item { display: flex; flex-direction: column; align-items: center; width: 30%; max-width: 340px; margin-bottom: 2.5rem; }
+  .bel-poster { display: block; width: 100%; cursor: pointer; opacity: 0; filter: blur(25px); transform: translateZ(0) scale(1.04); will-change: opacity, filter, transform; transition: transform 0.3s ease; }
+  .bel-poster.is-shown { animation: belFrostyFade 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+  .bel-poster:active { transform: translateZ(0) scale(0.97); }
+  .bel-poster img { display: block; width: 100%; height: auto; border-radius: 10px; background: #1c1c1c; }
+  @keyframes belFrostyFade { 0% { opacity: 0; filter: blur(25px); transform: translateZ(0) scale(1.04); } 100% { opacity: 1; filter: blur(0); transform: translateZ(0) scale(1); } }
+  .bel-poster-caption { text-align: center; margin-top: -5px; opacity: 0; cursor: pointer; }
+  .bel-poster-caption.is-shown { animation: belCaptionFade 1.2s ease-out 0.4s forwards; }
+  @keyframes belCaptionFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .bel-poster-name { font-family: "AppleGaramond", Georgia, serif; font-size: 1.35rem; letter-spacing: 0.01em; color: #fff; text-shadow: 0 0 0.4em rgba(255,255,255,0.25); }
+  .bel-poster-price { font-family: "BelTimes", "Times New Roman", Times, serif; font-size: 1.4rem; letter-spacing: 0.01em; color: rgba(255,255,255,0.9); margin-top: -5px; text-shadow: 0 0 0.3em rgba(255,255,255,0.2); }
+  @media (max-width: 768px) { .bel-two-posters { padding: 3rem 1.2rem; gap: 4vw 4vw; } .bel-poster-item { width: 45%; max-width: 220px; margin-bottom: 2rem; } .bel-poster-name { font-size: 1.05rem; } .bel-poster-price { font-size: 1.1rem; } }
+  .bel-carousel { display: none; }
+  @media (max-width: 768px) { .bel-carousel { display: block; } }
+  .bel-carousel { width: 100vw; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; position: relative; background: #1c1c1c; padding: 2.5rem 0 3rem; overflow: hidden; }
+  .bel-carousel-viewport { max-width: 260px; margin: 0 auto; position: relative; overflow: hidden; }
+  .bel-carousel-viewport::before, .bel-carousel-viewport::after { content: ""; position: absolute; top: 0; bottom: 0; width: 24px; z-index: 4; pointer-events: none; }
+  .bel-carousel-viewport::before { left: 0; background: linear-gradient(to right, #1c1c1c, rgba(28,28,28,0)); }
+  .bel-carousel-viewport::after { right: 0; background: linear-gradient(to left, #1c1c1c, rgba(28,28,28,0)); }
+  .bel-carousel-track { display: flex; will-change: transform; transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1); }
+  .bel-carousel-track.bel-dragging { transition: none; }
+  .bel-slide { min-width: 100%; display: flex; flex-direction: column; align-items: center; padding: 0 4px; filter: blur(6px); opacity: 0.5; transform: scale(0.96); transition: filter 0.55s ease, opacity 0.55s ease, transform 0.55s ease; }
+  .bel-slide.is-current { filter: blur(0); opacity: 1; transform: scale(1); }
+  .bel-slide a { display: block; width: 100%; cursor: pointer; }
+  .bel-slide img { display: block; width: 100%; height: auto; border-radius: 12px; background: #1c1c1c; user-select: none; -webkit-user-drag: none; pointer-events: none; }
+  .bel-carousel-cap { text-align: center; margin-top: 0.8rem; }
+  .bel-carousel-name { font-family: "AppleGaramond", Georgia, serif; font-size: 1.2rem; color: #fff; text-shadow: 0 0 0.4em rgba(255,255,255,0.2); }
+  .bel-carousel-price { font-family: "BelTimes", serif; font-size: 1.15rem; color: rgba(255,255,255,0.9); margin-top: -2px; }
+  .bel-arrow { position: absolute; top: calc(50% - 1.6rem); transform: translateY(-50%); width: 38px; height: 38px; border-radius: 999vw; background: linear-gradient(-75deg, rgba(255,255,255,0.1), rgba(255,255,255,0.3), rgba(255,255,255,0.1)); box-shadow: inset 0 1px 2px rgba(255,255,255,0.5), 0 2px 8px rgba(0,0,0,0.35); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 6; transition: transform 0.25s ease; }
+  .bel-arrow:active { transform: translateY(-50%) scale(0.9); }
+  .bel-arrow svg { width: 17px; height: 17px; stroke: #fff; stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4)); }
+  .bel-arrow-left { left: 12px; } .bel-arrow-right { right: 12px; }
+  .bel-dots { display: flex; justify-content: center; gap: 7px; margin-top: 1.2rem; flex-wrap: wrap; max-width: 240px; margin-left: auto; margin-right: auto; }
+  .bel-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: background 0.3s ease, transform 0.3s ease; }
+  .bel-dot.is-active { background: rgba(255,255,255,0.9); transform: scale(1.3); }
+  .bel-footer { width: 100%; background: #1c1c1c; padding: 3rem 1rem 3.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.6rem; font-family: "AppleGaramond", Georgia, serif; color: rgba(255,255,255,0.5); }
+  .bel-copy-mark { width: 26px; height: 26px; border: 1px solid rgba(255,255,255,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+  .bel-footer-name { font-size: 1rem; letter-spacing: 0.05em; }
+  section { scroll-margin-top: 80px; }
+  #belProductView, #belShippingView, #belCartView { display: none; position: relative; min-height: 100vh; }
+  body.view-product #belHome, body.view-shipping #belHome, body.view-cart #belHome { display: none; }
+  body.view-product #belProductView { display: block; }
+  body.view-shipping #belShippingView { display: block; }
+  body.view-cart #belCartView { display: block; }
+  .bel-prod-back { position: fixed; top: 80px; left: 24px; z-index: 50; width: 44px; height: 44px; border-radius: 999vw; display: flex; align-items: center; justify-content: center; cursor: pointer; background: linear-gradient(-75deg, rgba(255,255,255,0.1), rgba(255,255,255,0.3), rgba(255,255,255,0.1)); box-shadow: inset 0 1px 2px rgba(255,255,255,0.5), 0 2px 8px rgba(0,0,0,0.35); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); transition: transform 0.25s ease; }
+  .bel-prod-back:hover { transform: scale(1.1); }
+  .bel-prod-back svg { width: 20px; height: 20px; stroke: #fff; stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .bel-prod-title { position: relative; z-index: 30; text-align: center; margin: 6rem auto 0; font-family: "AppleGaramond", Georgia, serif; font-size: 3rem; letter-spacing: 0.01em; color: #fff; padding: 0 1rem; opacity: 0; filter: blur(24px); transform: scale(1.03); animation: belHeroFrost 1.4s cubic-bezier(0.2,0.8,0.2,1) forwards; text-shadow: 0 0 0.4em rgba(255,255,255,0.3); }
+  .bel-prod-poster { width: 100%; display: flex; justify-content: center; padding: 1rem 2rem 0; }
+  .bel-prod-poster img { display: block; width: 85.8%; max-width: 640px; height: auto; border-radius: 12px; opacity: 0; filter: blur(25px); transform: scale(1.04); animation: belFrostyFade 1.6s cubic-bezier(0.2,0.8,0.2,1) 0.3s forwards; }
+  .bel-prod-price { width: 100%; text-align: center; padding: 1.4rem 2rem 1.2rem; font-family: "BelTimes", "Times New Roman", Times, serif; font-size: 2.65rem; color: #fff; text-shadow: 0 0 0.4em rgba(255,255,255,0.35), 0 0 1em rgba(255,255,255,0.2); }
+  .bel-size-bar { width: 100%; display: flex; justify-content: center; align-items: center; gap: 1rem; padding: 0 2rem 3rem; flex-wrap: wrap; }
+  .bel-size-btn { position: relative; cursor: pointer; border: none; border-radius: 999vw; padding: 0.9em 1.6em; font-family: "Inter", sans-serif; font-weight: 500; font-size: 0.95rem; letter-spacing: -0.02em; color: #fff; white-space: nowrap; background: linear-gradient(-75deg, rgba(255,255,255,0.05), rgba(255,255,255,0.2), rgba(255,255,255,0.05)); box-shadow: inset 0 0.125em 0.125em rgba(0,0,0,0.05), inset 0 -0.125em 0.125em rgba(255,255,255,0.5), 0 0.25em 0.125em -0.125em rgba(0,0,0,0.2), 0 0 0.1em 0.25em inset rgba(255,255,255,0.2); backdrop-filter: blur(4px); text-shadow: 0 0.05em 0.15em rgba(0,0,0,0.4); transition: background 0.45s ease, box-shadow 0.45s ease, transform 0.3s cubic-bezier(0.25,1,0.5,1); }
+  .bel-size-btn::after { content: ""; position: absolute; inset: 0; border-radius: 999vw; padding: 1.5px; background: linear-gradient(180deg, rgba(255,255,255,0.5), rgba(255,255,255,0.5)); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; transition: background 0.45s ease; pointer-events: none; }
+  .bel-size-btn:hover { transform: scale(1.03); }
+  .bel-size-btn.is-selected { background: linear-gradient(-75deg, rgba(120,180,255,0.35), rgba(90,150,240,0.6), rgba(120,180,255,0.35)); box-shadow: inset 0 0.125em 0.125em rgba(0,0,0,0.1), inset 0 -0.125em 0.125em rgba(255,255,255,0.55), 0 0.25em 0.6em rgba(40,80,160,0.45); }
+  .bel-prod-desc { width: 100%; max-width: 620px; margin: 0 auto; padding: 0 2rem 3rem; text-align: center; font-family: "AppleGaramond", Georgia, serif; font-size: 1.15rem; line-height: 1.7; color: rgba(255,255,255,0.85); }
+  .bel-buy-bar { width: 100%; display: flex; justify-content: center; align-items: center; gap: 1.4rem; padding: 0 2rem 6rem; flex-wrap: wrap; }
+  .belc-btn { cursor: pointer; position: relative; -webkit-tap-highlight-color: rgba(0,0,0,0); background: linear-gradient(-75deg, rgba(255,255,255,0.05), rgba(255,255,255,0.2), rgba(255,255,255,0.05)); border: none; border-radius: 999vw; box-shadow: inset 0 0.125em 0.125em rgba(0,0,0,0.05), inset 0 -0.125em 0.125em rgba(255,255,255,0.5), 0 0.25em 0.125em -0.125em rgba(0,0,0,0.2), 0 0 0.1em 0.25em inset rgba(255,255,255,0.2); backdrop-filter: blur(4px); transform: translateZ(0); transition: transform 400ms cubic-bezier(0.25, 1, 0.5, 1); font-size: 16px; }
+  .belc-btn:hover { transform: scale(0.975); }
+  .belc-btn span { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; font-family: "Inter", sans-serif; letter-spacing: -0.05em; font-weight: 500; font-size: 1em; color: #fff; text-shadow: 0 0.25em 0.05em rgba(0,0,0,0.4); padding-inline: 1.6em; padding-block: 0.9em; white-space: nowrap; min-width: 6em; }
+  .belc-btn::after { content: ""; position: absolute; z-index: 1; inset: 0; border-radius: 999vw; padding: 1.5px; background: conic-gradient(from var(--belc-angle-1) at 50% 50%, rgba(0,0,0,0.5), rgba(0,0,0,0) 5% 40%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0) 60% 95%, rgba(0,0,0,0.5)), linear-gradient(180deg, rgba(255,255,255,0.5), rgba(255,255,255,0.5)); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; transition: --belc-angle-1 500ms ease; }
+  .belc-btn:hover::after { --belc-angle-1: -125deg; }
+  .belc-btn.belc-buy { background: linear-gradient(-75deg, rgba(190,255,170,0.25), rgba(150,250,120,0.55), rgba(210,255,190,0.25)); }
+  .belc-btn.belc-buy::after { background: conic-gradient(from var(--belc-angle-1) at 50% 50%, rgba(40,100,30,0.55), rgba(40,100,30,0) 5% 40%, rgba(40,100,30,0.55) 50%, rgba(40,100,30,0) 60% 95%, rgba(40,100,30,0.55)), linear-gradient(180deg, rgba(210,255,185,0.65), rgba(170,250,140,0.65)); }
+  @media (max-width: 768px) { .bel-prod-title { font-size: 2rem; margin-top: 5rem; } .bel-prod-poster img { width: 100%; max-width: 460px; } .bel-prod-price { font-size: 2.04rem; } .bel-size-btn { padding: 0.8em 1.2em; font-size: 0.82rem; } .bel-prod-desc { font-size: 1.02rem; } .belc-btn { font-size: 14px; } .bel-prod-back { left: 14px; width: 40px; height: 40px; } }
+
+  /* cart badge on bar icon */
+  .bel-cart-badge { position: absolute; top: -6px; right: -8px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999vw; background: #4a9dff; color: #fff; font-family: "Inter", sans-serif; font-size: 10px; font-weight: 500; display: none; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+  .bel-cart-badge.show { display: flex; }
+
+  /* SHIPPING view */
+  .bel-shipping-wrap { width: 100%; max-width: 720px; margin: 0 auto; padding: 7rem 2rem 4rem; text-align: center; font-family: "AppleGaramond", Georgia, serif; color: #fff; }
+  .bel-shipping-wrap h2 { font-size: 2.4rem; letter-spacing: 0.02em; margin: 0 0 2rem; text-shadow: 0 0 0.4em rgba(255,255,255,0.25); }
+  .bel-shipping-wrap p { font-size: 1.2rem; line-height: 1.8; color: rgba(255,255,255,0.88); margin: 0 0 1.6rem; }
+  .bel-shipping-wrap p.bel-sign { margin-top: 2.2rem; color: rgba(255,255,255,0.7); font-size: 1.1rem; }
+  @media (max-width: 768px) { .bel-shipping-wrap { padding: 6rem 1.4rem 3rem; } .bel-shipping-wrap h2 { font-size: 1.9rem; } .bel-shipping-wrap p { font-size: 1.05rem; line-height: 1.7; } }
+
+  /* CART view */
+  .bel-cart { width: 100%; max-width: 760px; margin: 0 auto; padding: 7rem 1.5rem 5rem; font-family: "AppleGaramond", Georgia, serif; color: #fff; }
+  .bel-cart h2 { text-align: center; font-size: 2.4rem; margin: 0 0 2rem; text-shadow: 0 0 0.4em rgba(255,255,255,0.2); }
+  .bel-cart-empty { text-align: center; color: rgba(255,255,255,0.5); font-size: 1.15rem; padding: 2rem 0; }
+  .bel-cart-row { display: flex; align-items: center; gap: 1rem; padding: 1.1rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .bel-cart-row img { width: 70px; height: auto; border-radius: 6px; flex-shrink: 0; }
+  .bel-cart-info { flex: 1; min-width: 0; }
+  .bel-cart-name { font-size: 1.15rem; }
+  .bel-cart-variant { font-size: 0.85rem; color: rgba(255,255,255,0.5); }
+  .bel-qty { display: inline-flex; align-items: center; gap: 0; margin-top: 0.5rem; border: 1px solid rgba(255,255,255,0.25); border-radius: 999vw; overflow: hidden; }
+  .bel-qty button { background: none; border: none; color: #fff; width: 30px; height: 28px; cursor: pointer; font-size: 1.1rem; font-family: "Inter", sans-serif; transition: background 0.2s ease; }
+  .bel-qty button:hover { background: rgba(255,255,255,0.12); }
+  .bel-qty span { min-width: 30px; text-align: center; font-family: "BelTimes", serif; font-size: 1rem; }
+  .bel-cart-right { text-align: right; flex-shrink: 0; }
+  .bel-cart-line { font-family: "BelTimes", serif; font-size: 1.25rem; }
+  .bel-cart-remove { display: block; margin-top: 0.4rem; background: none; border: none; color: rgba(255,255,255,0.45); font-family: "AppleGaramond", serif; font-size: 0.85rem; cursor: pointer; text-decoration: underline; }
+  .bel-cart-remove:hover { color: rgba(255,255,255,0.8); }
+  .bel-cart-foot { margin-top: 2rem; text-align: right; }
+  .bel-cart-subtotal { font-family: "BelTimes", serif; font-size: 1.6rem; margin-bottom: 1.2rem; }
+  @media (max-width: 768px) { .bel-cart { padding: 6rem 1.1rem 4rem; } .bel-cart-row img { width: 56px; } .bel-cart-name { font-size: 1.02rem; } }
+
+  /* order status banner */
+  .bel-toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px); max-width: min(90vw, 420px); padding: 0.9rem 1.3rem; border-radius: 14px; background: rgba(30,30,30,0.92); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-family: "AppleGaramond", Georgia, serif; font-size: 1.02rem; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.5); z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.35s ease, transform 0.35s ease; }
+  .bel-toast.is-shown { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+  .bel-toast.is-error { border-color: rgba(255,120,120,0.5); }
+</style>
+</head>
+<body>
+<div class="bel-top-blur-bar" id="belTopBlurBar" aria-hidden="true">
+  <div class="bel-top-menu-btn" id="belMenuBtn"><span></span><span></span><span></span></div>
+  <img class="bel-bar-logo" id="belBarLogo" src="https://cdn.shopify.com/s/files/1/1081/4042/9661/files/Gemini_Generated_Image_rm6rg9rm6rg9rm6r-removebg-preview_1.png?v=1783690575" alt="Belniak">
+  <a href="#cart" class="bel-top-cart" id="belCartIcon"><svg viewBox="0 0 24 24"><path d="M6 2 L3 6 V20 a2 2 0 0 0 2 2 H19 a2 2 0 0 0 2 -2 V6 L18 2 Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10 a4 4 0 0 1 -8 0"></path></svg><span class="bel-cart-badge" id="belCartBadge">0</span></a>
+</div>
+<div class="bel-menu-panel" id="belMenuPanel">
+  <a href="#belTwoPosters" class="bel-menu-link" id="belProductsLink">Products</a>
+  <a href="#shipping" class="bel-menu-link" id="belShippingLink">Shipping</a>
+  <a href="#belReviews" class="bel-menu-link" id="belReviewsLink">Reviews</a>
+</div>
+<div id="belHome">
+  <div class="bel-center-logo"><img id="belCenterLogo" src="https://cdn.shopify.com/s/files/1/1081/4042/9661/files/Gemini_Generated_Image_rm6rg9rm6rg9rm6r-removebg-preview_1.png?v=1783690575" alt="Belniak"></div>
+
+  <div class="bel-hero" id="belHero">
+    <div class="bel-hero-viewport" id="belHeroViewport"><div class="bel-hero-track" id="belHeroTrack"></div></div>
+    <div class="bel-hero-arrow bel-hero-arrow-left" id="belHeroPrev"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
+    <div class="bel-hero-arrow bel-hero-arrow-right" id="belHeroNext"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+    <div class="bel-hero-dots" id="belHeroDots"></div>
+  </div>
+
+  <section class="bel-two-posters" id="belTwoPosters"></section>
+  <section id="belReviews" style="max-width:680px;margin:0 auto;padding:2rem 1.5rem 4rem;font-family:'AppleGaramond',serif;color:#fff;">
+    <div style="display:flex;justify-content:center;margin-bottom:1.5rem;"><img src="https://cdn.shopify.com/s/files/1/1081/4042/9661/files/Gemini_Generated_Image_rm6rg9rm6rg9rm6r-removebg-preview_1.png?v=1783690575" style="width:66px;height:auto;"></div>
+    <div style="text-align:center;margin-bottom:1.5rem;"><div style="font-size:2.4rem;letter-spacing:0.02em;margin:0 0 0.6rem;text-shadow:0 0 0.4em rgba(255,255,255,0.2);">Reviews</div><div style="font-family:'BelTimes',serif;font-size:1.2rem;color:rgba(255,255,255,0.75);"><span style="color:#ffd35c;letter-spacing:0.1em;">★★★★★</span> 4.8 / 5.0 · 25 reviews</div></div>
+    <div style="max-width:560px;margin:0 auto 2.5rem;text-align:center;font-size:0.92rem;line-height:1.6;color:rgba(255,255,255,0.4);">To add your review email <a href="mailto:bbelniakcontact@gmail.com" style="color:rgba(255,255,255,0.6);text-decoration:underline;">bbelniakcontact@gmail.com</a> with the code printed on your poster's packaging the rating you'd like to give (0–5) and optionally a short text and a photo. I'll add it to this page within 24 hours — no matter what it says ;)</div>
+    <div id="belReviewsList"></div>
+  </section>
+  <div class="bel-footer"><div class="bel-copy-mark">C</div><div class="bel-footer-name">Belniak Poland</div></div>
+</div>
+<div id="belProductView">
+  <div class="bel-prod-back" id="belProdBack"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
+  <div class="bel-prod-title" id="belProdTitle"></div>
+  <div class="bel-prod-poster"><img id="belProdImg" src="" alt=""></div>
+  <div class="bel-prod-price"><span id="belPriceVal">40€</span></div>
+  <div class="bel-size-bar" id="belSizeBar">
+    <button type="button" class="bel-size-btn is-selected" data-size="3042">30×42 cm</button>
+    <button type="button" class="bel-size-btn" data-size="4060">40×60 cm</button>
+    <button type="button" class="bel-size-btn" data-size="5070">50×70 cm</button>
+  </div>
+  <div class="bel-prod-desc">Produced in Poland using high-quality materials. Available in three standard sizes as well as custom sizes on request. If you need a specific size, please contact us by email. Posters are sold without a frame.</div>
+  <div class="bel-buy-bar">
+    <button type="button" class="belc-btn" id="belAddCart"><span>Add to cart</span></button>
+    <button type="button" class="belc-btn belc-buy" id="belBuyNow"><span>Buy</span></button>
+  </div>
+</div>
+
+<div id="belShippingView">
+  <div class="bel-prod-back" id="belShipBack"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
+  <div class="bel-shipping-wrap">
+    <h2>Shipping</h2>
+    <p>We ship worldwide from Warsaw, Poland to every country in the world.</p>
+    <p>All packages are shipped directly to your door and address using trusted shipping agents and carriers such as FedEx, DHL and GLS.</p>
+    <p>Shipping takes 3–6 business days and every poster is carefully rolled into a protective tube to prevent damage and securely packaged, with double-box packaging used for additional protection when needed.</p>
+    <p class="bel-sign">— Damian Belniak :)</p>
+  </div>
+</div>
+
+<div id="belCartView">
+  <div class="bel-prod-back" id="belCartBack"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
+  <div class="bel-cart">
+    <h2>Your Cart</h2>
+    <div id="belCartBody"></div>
+  </div>
+</div>
+<script>
+var P = 'https://cdn.shopify.com/s/files/1/1081/4042/9661/files/';
+var PRODUCTS = [
+  { slug:'bmw-m12-nazca', name:'BMW Nazca M12', img:'ramka_2__converted.png?v=1786023486' },
+  { slug:'mercedes-benz-in-aller-welt', name:'Mercedes in aller Welt', img:'mercstarefinish.png?v=1786020441' },
+  { slug:'volkswagen-syncro-w12', name:'Volkswagen Syncro', img:'vww12ramka.png?v=1786031431' },
+  { slug:'mercedes-slr', name:'Mclaren SLR', img:'SLR_ramka.png?v=1785965055' },
+  { slug:'bmw-e39', name:'BMW E38', img:'bmwengineramka.png?v=1786031737' },
+  { slug:'mercedes-sls-amg-gt3', name:'Mercedes SLS AMG GT3', img:'slsrmaka.png?v=1786030758' },
+  { slug:'vw-golft-r32-jet-black', name:'Volkswagen Golf R32 Jet Black', img:'jetblackramka.png?v=1786028759' },
+  { slug:'maseratti-gt', name:'Maseratti GT', img:'ramka_converted.png?v=1786015140' },
+  { slug:'vw-passat-w8', name:'Volkswagen Passat W8', img:'ChatGPTImage5sie2026_22_33_52_upscayl_5x_upscayl-standard-4x_4345x6084_16__converted.png?v=1785971113' },
+  { slug:'vw-golf-gti', name:'Volkswagen Golf GTI', img:'Vwgolframka_converted.png?v=1785970771' },
+  { slug:'vw-touareg', name:'Volkswagen Touareg', img:'vwtureqramka.png?v=1785970399' },
+  { slug:'125', name:'Mercedes-Benz 125 years', img:'125yearsramka_converted.png?v=1785967958' },
+  { slug:'mercedes-63-amg', name:'Mercedes 63 AMG', img:'mercedessuvramka_converted.png?v=1785966692' },
+  { slug:'lamborghini-diablo', name:'Lamborghini Diablo', img:'ramka.png?v=1785966382' },
+  { slug:'bmw-z4', name:'BMW Z4', img:'ChatGPTImage5sie2026_22_33_52_upscayl_5x_upscayl-standard-4x_4345x6084_4__converted.png?v=1785965775' },
+  { slug:'audi-r8', name:'Audi R8', img:'audir8ramka.png?v=1785964508' },
+  { slug:'audi-q7', name:'Audi Q7', img:'audisuvramka_converted_2.png?v=1785963539' },
+  { slug:'audi-rs6-avant', name:'Audi RS6 Avant', img:'ChatGPTImage14sie2026_00_44_43_upscayl_4x_upscayl-standard-4x_converted_converted_1__converted.png?v=1786661976' }
+];
+var BY_SLUG = {}; PRODUCTS.forEach(function(p){ BY_SLUG[p.slug]=p; });
+function belShowBanner(msg, isError){
+  var el=document.getElementById('belToast');
+  if(!el){ el=document.createElement('div'); el.id='belToast'; el.className='bel-toast'; document.body.appendChild(el); }
+  el.textContent=msg;
+  el.classList.toggle('is-error', !!isError);
+  el.classList.add('is-shown');
+  clearTimeout(el._t);
+  el._t=setTimeout(function(){ el.classList.remove('is-shown'); }, 5000);
+}
+(function(){
+  var grid=document.getElementById('belTwoPosters'), track=document.getElementById('belHeroTrack');
+  PRODUCTS.forEach(function(p){
+    var item=document.createElement('div'); item.className='bel-poster-item';
+    item.innerHTML='<a href="#product/'+p.slug+'" class="bel-poster"><img src="'+P+p.img+'" alt="'+p.name+'" loading="lazy"></a><div class="bel-poster-caption" data-slug="'+p.slug+'"><div class="bel-poster-name">'+p.name+'</div><div class="bel-poster-price">25€</div></div>';
+    grid.appendChild(item);
+    var slide=document.createElement('div'); slide.className='bel-hero-slide';
+    slide.innerHTML='<a href="#product/'+p.slug+'"><img src="'+P+p.img+'" alt="'+p.name+'"></a><div class="bel-hero-cap"><div class="bel-hero-name">'+p.name+'</div><div class="bel-hero-price">25€</div></div>';
+    track.appendChild(slide);
+  });
+  var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var pi=e.target.querySelector('.bel-poster'),c=e.target.querySelector('.bel-poster-caption');if(pi)pi.classList.add('is-shown');if(c)c.classList.add('is-shown');obs.unobserve(e.target);}});},{threshold:0.1});
+  grid.querySelectorAll('.bel-poster-item').forEach(function(i){obs.observe(i);});
+  grid.querySelectorAll('.bel-poster-caption').forEach(function(c){c.addEventListener('click',function(){location.hash='product/'+c.getAttribute('data-slug');});});
+})();
+(function(){
+  var bar=document.getElementById('belTopBlurBar'); if(!bar)return;
+  var lastY=window.pageYOffset||0,ticking=false,activated=false,menuOpen=false;
+  function update(){var y=window.pageYOffset||document.documentElement.scrollTop,delta=y-lastY;
+    if(menuOpen){bar.classList.add('is-visible');lastY=y;ticking=false;return;}
+    if(!activated){if(delta>2&&y>5){activated=true;bar.classList.add('is-visible');}lastY=y;ticking=false;return;}
+    if(delta>2&&y>80){bar.classList.remove('is-visible');}else{bar.classList.add('is-visible');}
+    lastY=y;ticking=false;}
+  window.addEventListener('scroll',function(){if(!ticking){window.requestAnimationFrame(update);ticking=true;}},{passive:true});
+  var menuBtn=document.getElementById('belMenuBtn'),panel=document.getElementById('belMenuPanel');
+  menuBtn.addEventListener('click',function(){menuOpen=menuBtn.classList.toggle('is-open');panel.classList.toggle('is-open');if(menuOpen){bar.classList.add('menu-open');bar.classList.add('is-visible');activated=true;}else{bar.classList.remove('menu-open');}});
+  function closeMenu(){menuOpen=false;menuBtn.classList.remove('is-open');panel.classList.remove('is-open');bar.classList.remove('menu-open');}
+  document.getElementById('belProductsLink').addEventListener('click',function(e){e.preventDefault();closeMenu();goHome(function(){document.getElementById('belTwoPosters').scrollIntoView({behavior:'smooth',block:'start'});});});
+  document.getElementById('belShippingLink').addEventListener('click',function(e){e.preventDefault();closeMenu();location.hash='shipping';});
+  document.getElementById('belReviewsLink').addEventListener('click',function(e){e.preventDefault();closeMenu();goHome(function(){document.getElementById('belReviews').scrollIntoView({behavior:'smooth',block:'start'});});});
+  document.getElementById('belBarLogo').addEventListener('click',function(){location.hash='';});
+  document.getElementById('belCenterLogo').addEventListener('click',function(){location.hash='';});
+})();
+(function(){
+  var track=document.getElementById('belHeroTrack'),viewport=document.getElementById('belHeroViewport'),dotsWrap=document.getElementById('belHeroDots');
+  if(!track||!viewport)return;
+  var slides=track.querySelectorAll('.bel-hero-slide'),total=slides.length,index=0,autoTimer=null,dots=[];
+  for(var i=0;i<total;i++){var d=document.createElement('div');d.className='bel-hero-dot'+(i===0?' is-active':'');(function(n){d.addEventListener('click',function(){goTo(n);restartAuto();});})(i);dotsWrap.appendChild(d);dots.push(d);}
+  function markCurrent(){slides.forEach(function(s,k){s.classList.toggle('is-current',k===index);});}
+  function goTo(n){index=(n+total)%total;track.style.transform='translateX('+(-index*100)+'%)';dots.forEach(function(dot,k){dot.classList.toggle('is-active',k===index);});markCurrent();}
+  function next(){goTo(index+1);}function prev(){goTo(index-1);}
+  document.getElementById('belHeroNext').addEventListener('click',function(){next();restartAuto();});
+  document.getElementById('belHeroPrev').addEventListener('click',function(){prev();restartAuto();});
+  function startAuto(){autoTimer=setInterval(next,4000);}function restartAuto(){clearInterval(autoTimer);startAuto();}
+  markCurrent();startAuto();
+  var startX=0,curX=0,dragging=false,moved=false;
+  function pd(x){dragging=true;moved=false;startX=x;curX=x;track.classList.add('bel-dragging');clearInterval(autoTimer);}
+  function pm(x){if(!dragging)return;curX=x;var dx=curX-startX;if(Math.abs(dx)>5)moved=true;var pct=(dx/viewport.offsetWidth)*100;track.style.transform='translateX('+(-index*100+pct)+'%)';}
+  function pu(){if(!dragging)return;dragging=false;track.classList.remove('bel-dragging');var dx=curX-startX,th=viewport.offsetWidth*0.18;if(dx>th)prev();else if(dx<-th)next();else goTo(index);restartAuto();}
+  viewport.addEventListener('touchstart',function(e){pd(e.touches[0].clientX);},{passive:true});
+  viewport.addEventListener('touchmove',function(e){pm(e.touches[0].clientX);},{passive:true});
+  viewport.addEventListener('touchend',pu);
+  viewport.addEventListener('mousedown',function(e){e.preventDefault();pd(e.clientX);});
+  window.addEventListener('mousemove',function(e){pm(e.clientX);});
+  window.addEventListener('mouseup',pu);
+  track.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(e){if(moved){e.preventDefault();}});});
+})();
+(function(){
+  var list=document.getElementById('belReviewsList');
+  var F={it:'<svg viewBox="0 0 3 2"><rect width="1" height="2" x="0" fill="#008C45"/><rect width="1" height="2" x="1" fill="#fff"/><rect width="1" height="2" x="2" fill="#CD212A"/></svg>',de:'<svg viewBox="0 0 5 3"><rect width="5" height="1" y="0" fill="#000"/><rect width="5" height="1" y="1" fill="#DD0000"/><rect width="5" height="1" y="2" fill="#FFCE00"/></svg>',fr:'<svg viewBox="0 0 3 2"><rect width="1" height="2" x="0" fill="#0055A4"/><rect width="1" height="2" x="1" fill="#fff"/><rect width="1" height="2" x="2" fill="#EF4135"/></svg>',pl:'<svg viewBox="0 0 8 5"><rect width="8" height="2.5" y="0" fill="#fff"/><rect width="8" height="2.5" y="2.5" fill="#DC143C"/></svg>',se:'<svg viewBox="0 0 16 10"><rect width="16" height="10" fill="#006AA7"/><rect x="5" width="2" height="10" fill="#FECC00"/><rect y="4" width="16" height="2" fill="#FECC00"/></svg>',es:'<svg viewBox="0 0 3 2"><rect width="3" height="2" fill="#AA151B"/><rect width="3" height="1" y="0.5" fill="#F1BF00"/></svg>',at:'<svg viewBox="0 0 3 2"><rect width="3" height="2" fill="#fff"/><rect width="3" height="0.66" y="0" fill="#ED2939"/><rect width="3" height="0.66" y="1.34" fill="#ED2939"/></svg>',dk:'<svg viewBox="0 0 37 28"><rect width="37" height="28" fill="#C60C30"/><rect x="12" width="4" height="28" fill="#fff"/><rect y="12" width="37" height="4" fill="#fff"/></svg>',gb:'<svg viewBox="0 0 60 30"><rect width="60" height="30" fill="#012169"/><path d="M0,0 60,30 M60,0 0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 60,30 M60,0 0,30" stroke="#C8102E" stroke-width="4"/><path d="M30,0 30,30 M0,15 60,15" stroke="#fff" stroke-width="10"/><path d="M30,0 30,30 M0,15 60,15" stroke="#C8102E" stroke-width="6"/></svg>',hr:'<svg viewBox="0 0 3 2"><rect width="3" height="0.66" y="0" fill="#FF0000"/><rect width="3" height="0.66" y="0.66" fill="#fff"/><rect width="3" height="0.66" y="1.34" fill="#171796"/></svg>',ro:'<svg viewBox="0 0 3 2"><rect width="1" height="2" x="0" fill="#002B7F"/><rect width="1" height="2" x="1" fill="#FCD116"/><rect width="1" height="2" x="2" fill="#CE1126"/></svg>',jp:'<svg viewBox="0 0 3 2"><rect width="3" height="2" fill="#fff"/><circle cx="1.5" cy="1" r="0.6" fill="#BC002D"/></svg>',in:'<svg viewBox="0 0 3 2"><rect width="3" height="0.66" y="0" fill="#FF9933"/><rect width="3" height="0.66" y="0.66" fill="#fff"/><rect width="3" height="0.66" y="1.34" fill="#138808"/><circle cx="1.5" cy="1" r="0.22" fill="none" stroke="#000080" stroke-width="0.05"/></svg>',kr:'<svg viewBox="0 0 3 2"><rect width="3" height="2" fill="#fff"/><circle cx="1.5" cy="1" r="0.4" fill="#CD2E3A"/><path d="M1.1,1 a0.4,0.4 0 0,1 0.8,0" fill="#0047A0"/></svg>',cn:'<svg viewBox="0 0 3 2"><rect width="3" height="2" fill="#DE2910"/><path d="M0.3,0.3 L0.4,0.55 L0.15,0.4 L0.45,0.4 L0.2,0.55 Z" fill="#FFDE00"/></svg>',us:'<svg viewBox="0 0 19 10"><rect width="19" height="10" fill="#B22234"/><rect y="1" width="19" height="1" fill="#fff"/><rect y="3" width="19" height="1" fill="#fff"/><rect y="5" width="19" height="1" fill="#fff"/><rect y="7" width="19" height="1" fill="#fff"/><rect y="9" width="19" height="1" fill="#fff"/><rect width="8" height="6" fill="#3C3B6E"/></svg>',ne:'<svg viewBox="0 0 6 4"><rect width="6" height="4" fill="#E05206"/><rect width="6" height="1.33" y="1.33" fill="#fff"/><rect width="6" height="1.33" y="2.67" fill="#0DB02B"/><circle cx="3" cy="2" r="0.5" fill="#E05206"/></svg>'};
+  function stars(r){var end='<span style="font-family:BelTimes,serif;color:rgba(255,255,255,0.5);font-size:0.8rem;margin-left:0.35rem;">'+r.toFixed(1)+'</span>';if(r===5)return '★★★★★'+end;if(r===4.5)return '★★★★<span style="opacity:0.5">★</span>'+end;if(r===4)return '★★★★<span style="opacity:0.3">★</span>'+end;if(r===1)return '★<span style="opacity:0.3">★★★★</span>'+end;return end;}
+  var data=[{n:'Emilio Fantozzi',f:'it',c:'Italy',r:5,t:'Poster looks great'},{n:'Ottmar Kellerhals',f:'de',c:'Germany',r:5},{n:'Thibault Beauchêne',f:'fr',c:'France',r:5,p:'IMG_9695.jpg?v=1786367841'},{n:'Radomir Wiśniewski',f:'pl',c:'Poland',r:5},{n:'Håkan Öberg',f:'se',c:'Sweden',r:5,t:'Nothing to complain about fast delivery holy quality'},{n:'Ismael Zubizarreta',f:'es',c:'Spain',r:5,t:'Poster looks nice.'},{n:'Nikolaj Østergaard',f:'dk',c:'Denmark',r:5,t:'I looooooooooove the poster. need to invest in frame haha',p:'987.png?v=1786373088'},{n:'Leopold Hartleben',f:'at',c:'Austria',r:5},{n:'Søren Kjærgaard',f:'dk',c:'Denmark',r:5,t:"I love the BMW Nazca bro I couldn't find any poster of this car — thx."},{n:'Cedric Pennington',f:'gb',c:'United Kingdom',r:5},{n:'Gennaro Vitale',f:'it',c:'Italy',r:5},{n:'Dietrich Löwenthal',f:'de',c:'Germany',r:5},{n:'Zvonimir Kovačević',f:'hr',c:'Croatia',r:5},{n:'Bogumił Chmielewski',f:'pl',c:'Poland',r:5},{n:'Aurélien Foucauld',f:'fr',c:'France',r:5},{n:'Vidar Ålund',f:'se',c:'Sweden',r:5},{n:'Dragoș Antonescu',f:'ro',c:'Romania',r:5},{n:'Kaneyoshi Tsujimoto',f:'jp',c:'Japan',r:4.5,t:'Poster looks great but delivery took 5 days'},{n:'Rohan Chatterjee',f:'in',c:'India',r:4.5},{n:'Seok-jin Baek',f:'kr',c:'South Korea',r:4.5},{n:'Wenqing Zhao',f:'cn',c:'China',r:4.5},{n:'Sullivan Ashcroft',f:'us',c:'USA',r:4.5,t:'Good quality but the delivery is expensive ;(',p:'IMG_9697.jpg?v=1786367841'},{n:'Thaddeus Holloway',f:'us',c:'USA',r:4.5},{n:'Cormac Blackwood',f:'us',c:'USA',r:4,t:'My son likes it.'},{n:'Emerson Whitaker',f:'us',c:'USA',r:4},{n:'Fitzgerald Ambrose',f:'ne',c:'Niger',r:1,t:'Tbh poster is great I just want to use my free will and give 1 star. Niger'}];
+  var html='';
+  data.forEach(function(d){html+='<div class="bel-review" style="padding:1.1rem 0;border-bottom:1px solid rgba(255,255,255,0.07);opacity:0;transform:translateY(10px);">';html+='<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.2rem;flex-wrap:wrap;"><span style="font-size:1.1rem;color:#fff;">'+d.n+'</span><span style="width:20px;height:14px;border-radius:2px;overflow:hidden;box-shadow:0 0 2px rgba(0,0,0,0.5);flex-shrink:0;display:inline-block;">'+(F[d.f]||'')+'</span><span style="font-size:0.82rem;color:rgba(255,255,255,0.45);">'+d.c+'</span></div>';html+='<div style="color:#ffd35c;font-size:0.92rem;letter-spacing:0.06em;margin-bottom:0.35rem;text-shadow:0 0 0.3em rgba(255,211,92,0.35);">'+stars(d.r)+'</div>';if(d.t)html+='<div style="font-size:1.05rem;line-height:1.55;color:rgba(255,255,255,0.85);">'+d.t+'</div>';if(d.p)html+='<div style="margin-top:0.7rem;max-width:220px;border-radius:8px;overflow:hidden;"><img src="'+P+d.p+'" style="display:block;width:100%;height:auto;border-radius:8px;"></div>';html+='</div>';});
+  list.innerHTML=html;
+  var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.style.transition='opacity 0.55s cubic-bezier(0.2,0.8,0.2,1), transform 0.55s cubic-bezier(0.2,0.8,0.2,1)';e.target.style.opacity='1';e.target.style.transform='translateY(0)';obs.unobserve(e.target);}});},{threshold:0.1});
+  list.querySelectorAll('.bel-review').forEach(function(c){obs.observe(c);});
+})();
+(function(){
+  var didScroll=false,userActed=false,idleTimer=null,evs=['scroll','wheel','touchstart','mousedown','keydown','mousemove'];
+  function rm(){evs.forEach(function(e){window.removeEventListener(e,onAct);});}
+  function onAct(){userActed=true;clearTimeout(idleTimer);rm();}
+  evs.forEach(function(e){window.addEventListener(e,onAct,{passive:true});});
+  idleTimer=setTimeout(function(){if(userActed||didScroll)return;didScroll=true;rm();window.scrollBy({top:Math.round(window.innerHeight*0.6),behavior:'smooth'});},3500);
+})();
+(function(){
+  var view=document.getElementById('belProductView'),titleEl=document.getElementById('belProdTitle'),imgEl=document.getElementById('belProdImg'),priceEl=document.getElementById('belPriceVal'),sizeBar=document.getElementById('belSizeBar'),btns=sizeBar.querySelectorAll('.bel-size-btn'),current=40,anim=null,activeSlug=null;
+  var PRICES={'3042':20,'4060':25,'5070':30},SIZELBL={'3042':'30×42 cm','4060':'40×60 cm','5070':'50×70 cm'};
+  var SIZES=['3042','4060','5070'];
+
+  /* ---- CART (in-memory) ---- */
+  var cart=[]; // {slug,name,img,size,price,qty}
+  var badge=document.getElementById('belCartBadge');
+  function cartCount(){var n=0;cart.forEach(function(i){n+=i.qty;});return n;}
+  function updateBadge(){var n=cartCount();badge.textContent=n;badge.classList.toggle('show',n>0);}
+  function addToCart(slug,size){
+    var p=BY_SLUG[slug];if(!p)return;
+    var price=PRICES[size];
+    var ex=cart.filter(function(i){return i.slug===slug&&i.size===size;})[0];
+    if(ex){ex.qty++;}else{cart.push({slug:slug,name:p.name,img:p.img,size:size,price:price,qty:1});}
+    updateBadge();
+  }
+  function renderCart(){
+    var body=document.getElementById('belCartBody');
+    if(!cart.length){body.innerHTML='<div class="bel-cart-empty">Your cart is empty.</div>';return;}
+    var html='',sub=0;
+    cart.forEach(function(it,idx){
+      var line=it.price*it.qty;sub+=line;
+      html+='<div class="bel-cart-row">';
+      html+='<img src="'+P+it.img+'" alt="'+it.name+'">';
+      html+='<div class="bel-cart-info"><div class="bel-cart-name">'+it.name+'</div><div class="bel-cart-variant">'+SIZELBL[it.size]+'</div>';
+      html+='<div class="bel-qty"><button data-act="dec" data-i="'+idx+'">−</button><span>'+it.qty+'</span><button data-act="inc" data-i="'+idx+'">+</button></div></div>';
+      html+='<div class="bel-cart-right"><div class="bel-cart-line">'+line+'€</div><button class="bel-cart-remove" data-act="rm" data-i="'+idx+'">Remove</button></div>';
+      html+='</div>';
+    });
+    html+='<div class="bel-cart-foot"><div class="bel-cart-subtotal">Subtotal: '+sub+'€</div><button type="button" class="belc-btn belc-buy" id="belCheckout"><span>Checkout</span></button></div>';
+    body.innerHTML=html;
+    body.querySelectorAll('[data-act]').forEach(function(b){
+      b.addEventListener('click',function(){
+        var i=parseInt(b.getAttribute('data-i'),10),act=b.getAttribute('data-act');
+        if(act==='inc')cart[i].qty++;
+        else if(act==='dec'){cart[i].qty--;if(cart[i].qty<1)cart.splice(i,1);}
+        else if(act==='rm')cart.splice(i,1);
+        updateBadge();renderCart();
+      });
+    });
+    var co=document.getElementById('belCheckout');
+    if(co)co.addEventListener('click',function(){
+      co.disabled=true;
+      var lbl=co.querySelector('span'); var prevLbl=lbl.textContent; lbl.textContent='Ładowanie…';
+      fetch('/api/create-checkout-session',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({cart:cart.map(function(i){return {slug:i.slug,size:i.size,qty:i.qty};})})
+      })
+      .then(function(r){return r.json();})
+      .then(function(data){
+        if(data && data.url){ window.location.href=data.url; }
+        else { belShowBanner((data&&data.error)||'Nie udało się rozpocząć płatności, spróbuj ponownie.',true); co.disabled=false; lbl.textContent=prevLbl; }
+      })
+      .catch(function(){ belShowBanner('Błąd połączenia, spróbuj ponownie.',true); co.disabled=false; lbl.textContent=prevLbl; });
+    });
+  }
+
+  function animateTo(target){if(anim)cancelAnimationFrame(anim);var start=null,from=current,dur=500;function ease(t){return 1-Math.pow(1-t,3);}function step(ts){if(!start)start=ts;var p=Math.min((ts-start)/dur,1);priceEl.textContent=Math.round(from+(target-from)*ease(p))+'€';if(p<1)anim=requestAnimationFrame(step);else{priceEl.textContent=target+'€';current=target;}}anim=requestAnimationFrame(step);}
+  function selectedSize(){var s=sizeBar.querySelector('.bel-size-btn.is-selected');return s?s.getAttribute('data-size'):'3042';}
+  btns.forEach(function(b){b.addEventListener('click',function(){btns.forEach(function(x){x.classList.remove('is-selected');});b.classList.add('is-selected');animateTo(PRICES[b.getAttribute('data-size')]);});});
+  document.getElementById('belAddCart').addEventListener('click',function(){addToCart(activeSlug,selectedSize());var el=document.getElementById('belCartIcon');el.style.transform='translateY(-50%) scale(1.3)';setTimeout(function(){el.style.transform='';},250);});
+  document.getElementById('belBuyNow').addEventListener('click',function(){addToCart(activeSlug,selectedSize());location.hash='cart';});
+
+  document.getElementById('belProdBack').addEventListener('click',function(){history.length>1?history.back():(location.hash='');});
+  document.getElementById('belShipBack').addEventListener('click',function(){location.hash='';});
+  document.getElementById('belCartBack').addEventListener('click',function(){location.hash='';});
+
+  function setView(v){document.body.className=v?('view-'+v):'';}
+  function openProduct(slug){var p=BY_SLUG[slug];if(!p){location.hash='';return;}activeSlug=slug;titleEl.textContent=p.name;imgEl.src=P+p.img;imgEl.alt=p.name;btns.forEach(function(x,i){x.classList.toggle('is-selected',i===0);});current=40;priceEl.textContent='40€';setView('product');window.scrollTo(0,0);setTimeout(function(){animateTo(20);},600);}
+
+  window.goHome=function(cb){setView('');if(location.hash&&location.hash!=='#'){history.replaceState(null,'',location.pathname+location.search);}if(cb)setTimeout(cb,50);};
+
+  function route(){
+    var h=location.hash.replace(/^#/,'');
+    if(h.indexOf('product/')===0){openProduct(h.slice(8));}
+    else if(h==='shipping'){setView('shipping');window.scrollTo(0,0);}
+    else if(h==='cart'){renderCart();setView('cart');window.scrollTo(0,0);}
+    else{setView('');}
+  }
+  window.addEventListener('hashchange',route);
+  updateBadge();route();
+
+  (function(){
+    var params=new URLSearchParams(location.search);
+    if(params.get('success')==='true'){
+      cart.length=0; updateBadge();
+      belShowBanner('Dziękujemy! Zamówienie przyjęte — potwierdzenie wysłaliśmy na maila.', false);
+      history.replaceState(null,'',location.pathname+location.hash);
+    } else if(params.get('canceled')==='true'){
+      belShowBanner('Płatność anulowana — koszyk został zachowany.', true);
+      history.replaceState(null,'',location.pathname+location.hash);
+    }
+  })();
+})();
+</script>
+</body>
+</html>

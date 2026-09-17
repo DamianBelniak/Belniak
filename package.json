@@ -1,0 +1,9 @@
+{
+  "name": "belniak-posters",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Belniak — strona z plakatami + płatności Stripe",
+  "dependencies": {
+    "stripe": "^17.4.0"
+  }
+}

@@ -1,12 +1,6 @@
 // /api/create-checkout-session.js
-// Vercel serverless function (Node.js runtime).
-// Buduje sesję Stripe Checkout na podstawie koszyka przysłanego z frontu.
-// Ceny i nazwy produktów są liczone TU, po stronie serwera — front nigdy
-// nie jest źródłem prawdy o cenie (żeby nikt nie mógł sobie "poprawić" ceny w konsoli).
-
 const Stripe = require('stripe');
 
-// --- ten sam katalog produktów co w index.html — trzymaj oba miejsca zsynchronizowane ---
 const PRODUCTS = [
   { slug: 'bmw-m12-nazca', name: 'BMW Nazca M12' },
   { slug: 'mercedes-benz-in-aller-welt', name: 'Mercedes in aller Welt' },
@@ -33,8 +27,14 @@ PRODUCTS.forEach(function (p) { BY_SLUG[p.slug] = p; });
 const PRICES = { '3042': 20, '4060': 25, '5070': 30 }; // EUR
 const SIZE_LABELS = { '3042': '30×42 cm', '4060': '40×60 cm', '5070': '50×70 cm' };
 
-// Kraje wysyłki — szeroka lista pokrywająca praktycznie cały świat.
-// Stripe wymaga jawnej listy kodów ISO (nie ma "worldwide" wildcard).
+// Produkt testowy — do sprawdzenia realnej płatności małą kwotą.
+// Stripe ma minimalną kwotę transakcji (dla PLN to zwykle ok. 2.00 zł) —
+// jeśli sesja się nie utworzy / płatność odrzuci przez zbyt niską kwotę,
+// podnieś TEST_PRICE_GROSZ do 200 (2.00 zł).
+const TEST_SLUG = 'test-1zl';
+const TEST_PRICE_GROSZ = 100; // 1.00 zł
+BY_SLUG[TEST_SLUG] = { slug: TEST_SLUG, name: 'TEST — 1 zł (do testu płatności)' };
+
 const SHIP_COUNTRIES = [
   'PL','DE','FR','GB','IE','IT','ES','PT','NL','BE','LU','AT','CH','SE','NO','DK','FI','IS',
   'CZ','SK','HU','RO','BG','HR','SI','GR','EE','LV','LT','MT','CY',
@@ -60,13 +60,40 @@ module.exports = async (req, res) => {
       return;
     }
 
+    const cartHasTest = cart.some((i) => i && i.slug === TEST_SLUG);
+    const cartHasReal = cart.some((i) => i && i.slug !== TEST_SLUG);
+    if (cartHasTest && cartHasReal) {
+      res.status(400).json({ error: 'Produkt testowy nie może być w koszyku razem z innymi produktami.' });
+      return;
+    }
+
     const line_items = [];
     for (const raw of cart) {
       const product = BY_SLUG[raw && raw.slug];
-      const size = raw && raw.size;
       const qty = Math.max(1, Math.min(20, parseInt(raw && raw.qty, 10) || 1));
 
-      if (!product || !PRICES[size]) {
+      if (!product) {
+        res.status(400).json({ error: 'Nieprawidłowa pozycja w koszyku.' });
+        return;
+      }
+
+      if (product.slug === TEST_SLUG) {
+        line_items.push({
+          quantity: qty,
+          price_data: {
+            currency: 'pln',
+            unit_amount: TEST_PRICE_GROSZ,
+            product_data: {
+              name: product.name,
+              metadata: { slug: product.slug, test: 'true' }
+            }
+          }
+        });
+        continue;
+      }
+
+      const size = raw && raw.size;
+      if (!PRICES[size]) {
         res.status(400).json({ error: 'Nieprawidłowa pozycja w koszyku.' });
         return;
       }
@@ -87,13 +114,12 @@ module.exports = async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       line_items: line_items,
-      // Stripe Checkout sam poprosi o e-mail — nie trzeba własnego formularza.
       shipping_address_collection: { allowed_countries: SHIP_COUNTRIES },
       phone_number_collection: { enabled: true },
       success_url: SITE_URL + '/?success=true&session_id={CHECKOUT_SESSION_ID}',
       cancel_url: SITE_URL + '/?canceled=true',
       metadata: {
-        cart: JSON.stringify(cart).slice(0, 490) // limit pola metadata w Stripe
+        cart: JSON.stringify(cart).slice(0, 490)
       }
     });
 
